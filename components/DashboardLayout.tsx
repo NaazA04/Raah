@@ -76,19 +76,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (pathname !== '/login') {
-      const token = localStorage.getItem('operator_token');
-      if (!token) {
-        window.location.href = '/login';
-      }
-    }
-  }, [pathname]);
-
-  if (pathname === '/login') {
-    return <>{children}</>;
-  }
-
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');

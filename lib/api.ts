@@ -99,11 +99,16 @@ export async function fetchRoutes() {
   const cached = getCached<any[]>('routes');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/routes`);
-  if (!res.ok) throw new Error('Failed to fetch routes');
-  const data = await res.json();
-  setCache('routes', data, TTL.routes);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/routes`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    setCache('routes', data, TTL.routes);
+    return data;
+  } catch (err) {
+    console.warn('Backend routes unreachable:', err);
+    return [];
+  }
 }
 
 export async function fetchRouteDetails(id: string) {
@@ -111,77 +116,112 @@ export async function fetchRouteDetails(id: string) {
   const cached = getCached<any>(key);
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/routes/${id}`);
-  if (!res.ok) throw new Error('Failed to fetch route details');
-  const data = await res.json();
-  setCache(key, data, TTL.routes);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/routes/${id}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    setCache(key, data, TTL.routes);
+    return data;
+  } catch (err) {
+    console.warn('Backend route details unreachable:', err);
+    return null;
+  }
 }
 
 export async function fetchRoutesGeoJSON() {
   const cached = getCached<any>('routesGeoJSON');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/routes/geojson`);
-  if (!res.ok) throw new Error('Failed to fetch routes geojson');
-  const data = await res.json();
-  setCache('routesGeoJSON', data, TTL.geojson);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/routes/geojson`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    setCache('routesGeoJSON', data, TTL.geojson);
+    return data;
+  } catch (err) {
+    console.warn('Backend routes geojson unreachable:', err);
+    return null;
+  }
 }
 
 export async function fetchLiveTelemetryGeoJSON() {
   const cached = getCached<any>('liveTelemetryGeoJSON');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/telemetry/geojson`);
-  if (!res.ok) throw new Error('Failed to fetch telemetry geojson');
-  const data = await res.json();
-  setCache('liveTelemetryGeoJSON', data, TTL.telemetry);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/telemetry/geojson`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    setCache('liveTelemetryGeoJSON', data, TTL.telemetry);
+    return data;
+  } catch (err) {
+    console.warn('Backend telemetry geojson unreachable:', err);
+    return null;
+  }
 }
 
 export async function fetchAllStopsGeoJSON() {
   const cached = getCached<any>('allStopsGeoJSON');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/routes/stops/geojson`);
-  if (!res.ok) throw new Error('Failed to fetch stops geojson');
-  const data = await res.json();
-  setCache('allStopsGeoJSON', data, TTL.geojson);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/routes/stops/geojson`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    setCache('allStopsGeoJSON', data, TTL.geojson);
+    return data;
+  } catch (err) {
+    console.warn('Backend stops geojson unreachable:', err);
+    return null;
+  }
 }
 
 export async function fetchAnalyticsOverview() {
   const cached = getCached<any>('analyticsOverview');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/analytics/overview`);
-  if (!res.ok) throw new Error('Failed to fetch analytics overview');
-  const data = await res.json();
-  setCache('analyticsOverview', data, TTL.analytics);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/analytics/overview`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    setCache('analyticsOverview', data, TTL.analytics);
+    return data;
+  } catch (err) {
+    console.warn('Backend analytics overview unreachable:', err);
+    return null;
+  }
 }
 
 export async function fetchMaintenance() {
   const cached = getCached<any[]>('maintenance');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/maintenance`);
-  if (!res.ok) throw new Error('Failed to fetch maintenance logs');
-  const data = await res.json();
-  setCache('maintenance', data, TTL.maintenance);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/maintenance`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    setCache('maintenance', data, TTL.maintenance);
+    return data;
+  } catch (err) {
+    console.warn('Backend maintenance unreachable:', err);
+    return [];
+  }
 }
 
 export async function fetchConductors() {
   const cached = getCached<any[]>('conductors');
   if (cached) return cached;
 
-  const res = await fetch(`${API_URL}/operators/verifications?status=PENDING`);
-  if (!res.ok) throw new Error('Failed to fetch conductors');
-  const data = await res.json();
-  setCache('conductors', data, TTL.conductors);
-  return data;
+  try {
+    const res = await fetch(`${API_URL}/operators/verifications?status=PENDING`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    setCache('conductors', data, TTL.conductors);
+    return data;
+  } catch (err) {
+    console.warn('Backend conductors unreachable:', err);
+    return [];
+  }
 }
 
 export async function fetchStopHeatmap() {
